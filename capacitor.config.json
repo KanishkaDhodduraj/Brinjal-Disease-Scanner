@@ -1,0 +1,6 @@
+{
+  "appId": "com.kanishka.brinjaldisease",
+  "appName": "Brinjal Disease Scanner",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
