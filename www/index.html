@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrinjalCare Pro - Industry Standard Scanner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>BrinjalCare</span>
+        </div>
+
+        <!-- Language Selector -->
+        <div class="lang-selector">
+            <button class="btn btn-outline lang-btn active" data-lang="en">English</button>
+            <button class="btn btn-outline lang-btn" data-lang="ta">தமிழ்</button>
+        </div>
+
+        <ul class="nav-links">
+            <li class="nav-item active" data-screen="home-screen" data-i18n="nav_home">Home</li>
+            <li class="nav-item" data-screen="management-screen" data-i18n="nav_management">Management Advice</li>
+            <li class="nav-item" data-screen="history-screen" data-i18n="nav_history">History</li>
+            <li class="nav-item" data-screen="map-screen" data-i18n="nav_map">Field Map</li>
+            <li class="nav-item" data-screen="finder-screen" data-i18n="nav_finder">Fertilizer Finder</li>
+        </ul>
+
+        <!-- Voice Assistant -->
+        <div style="margin-top: 20px;">
+            <button id="voiceAssistantBtn" class="btn btn-voice" style="width: 100%; border-radius: 99px;">
+                🎙️ <span data-i18n="voice_assistant">Voice Assistant</span>
+            </button>
+        </div>
+
+        <div style="margin-top: auto;">
+            <button id="logoutBtn" class="btn btn-outline" style="width: 100%;" data-i18n="logout">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Screen -->
+        <section id="home-screen" class="section active">
+            <div class="header">
+                <h1 data-i18n="home_title">Nursery Management Dashboard</h1>
+                <p data-i18n="home_subtitle">Industrial performance monitoring for your Brinjal plantation.</p>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label" data-i18n="stat_total">Total Plots</span>
+                    <span id="stat-total" class="stat-value">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label" data-i18n="stat_healthy">Healthy</span>
+                    <span id="stat-healthy" class="stat-value" style="color: #059669;">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label" style="color: #dc2626;" data-i18n="stat_diseased">Damping-off</span>
+                    <span id="stat-diseased" class="stat-value" style="color: #dc2626;">0</span>
+                </div>
+            </div>
+
+            <div class="card-grid" style="grid-template-columns: 1fr;">
+                <!-- Disease Detection -->
+                <div class="card">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h2 data-i18n="detection_title">Disease Detection</h2>
+                        <div class="badge badge-active" data-i18n="active_badge">Live Scanner</div>
+                    </div>
+
+                    <div class="scanner-flex">
+                        <div class="preview-container">
+                            <img id="imagePreview" src="https://via.placeholder.com/400x300?text=Scan+Image"
+                                alt="Preview">
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="form-group">
+                                <label data-i18n="label_plot">Target Plot</label>
+                                <select id="plotSelect">
+                                    <option value="" data-i18n="option_select_plot">Select Plot...</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <button id="chooseBtn" class="btn btn-outline" style="width: 100%;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="17 8 12 3 7 8" />
+                                        <line x1="12" y1="3" x2="12" y2="15" />
+                                    </svg>
+                                    <span data-i18n="btn_choose">Choose Image</span>
+                                </button>
+                                <button id="predictBtn" class="btn btn-primary" style="width: 100%;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    </svg>
+                                    <span data-i18n="btn_analyze">Analyze Health</span>
+                                </button>
+                            </div>
+                            <input type="file" id="imageInput" style="display: none;" accept="image/*">
+                        </div>
+                    </div>
+                    <div id="predictResult" class="result-box" style="display: none;"></div>
+                    <button id="tellPredictBtn" class="btn btn-voice"
+                        style="margin-top: 12px; display: none; width: 100%;">🔊 <span data-i18n="btn_tell_results">Tell
+                            Analysis Results</span></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Smart Management Screen -->
+        <section id="management-screen" class="section">
+            <div class="header">
+                <h1 data-i18n="mgmt_title">Smart Management Helper</h1>
+                <p data-i18n="mgmt_subtitle">Expert recommendations based on your soil and crop stage.</p>
+            </div>
+
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <div class="card-grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label data-i18n="label_soil">Soil Composition</label>
+                        <select id="soilType">
+                            <option value="Red" data-i18n="soil_red">Red Soil</option>
+                            <option value="Medium" data-i18n="soil_medium">Medium Loam</option>
+                            <option value="Clay" data-i18n="soil_clay">Clay Heavy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="label_stage">Current Stage</label>
+                        <select id="cropStage">
+                            <option value="Nursery" data-i18n="stage_nursery">Nursery</option>
+                            <option value="Vegetative" data-i18n="stage_veg">Vegetative</option>
+                            <option value="Flowering" data-i18n="stage_flower">Flowering</option>
+                            <option value="Harvest" data-i18n="stage_harvest">Harvesting</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="getAdviceBtn" class="btn btn-primary" style="width: 100%;"
+                    data-i18n="btn_generate_advice">Generate Management
+                    Advice</button>
+                <div id="adviceResult" class="result-box" style="display: none; font-size: 14px; line-height: 1.6;">
+                </div>
+                <button id="tellAdviceBtn" class="btn btn-voice"
+                    style="margin-top: 12px; display: none; width: 100%;">🔊 <span data-i18n="btn_tell_advice">Tell
+                        Advice</span></button>
+            </div>
+        </section>
+
+        <!-- Field Map -->
+        <section id="map-screen" class="section">
+            <div class="header">
+                <h1 data-i18n="map_title">Field Layout Map</h1>
+                <p data-i18n="map_subtitle">Configure your plantation area and monitor plot-wise health status.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 24px;">
+                <div style="display: flex; gap: 24px; align-items: end;">
+                    <div class="form-group" style="margin: 0; min-width: 150px;">
+                        <label data-i18n="label_plots_count">Number of Plots</label>
+                        <input type="number" id="plotCountInput" value="10" min="1" max="100">
+                    </div>
+                    <button id="setupPlotsBtn" class="btn btn-primary" data-i18n="btn_init_field">Initialize
+                        Field</button>
+                    <div style="flex: 1; display: flex; justify-content: flex-end; gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                            <div style="width: 12px; height: 12px; background: #dcfce7; border-radius: 2px;"></div>
+                            <span data-i18n="legend_healthy">Healthy</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                            <div style="width: 12px; height: 12px; background: #fee2e2; border-radius: 2px;"></div>
+                            <span data-i18n="legend_diseased">Diseased</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                            <div style="width: 12px; height: 12px; background: #f1f5f9; border-radius: 2px;"></div>
+                            <span data-i18n="legend_none">Not Scanned</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="fieldMapWrapper" class="field-grid">
+                    <!-- Plots generated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- History -->
+        <section id="history-screen" class="section">
+            <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 data-i18n="history_title">Scan History</h1>
+                    <p data-i18n="history_subtitle">Timeline of all nursery health diagnostics.</p>
+                </div>
+                <button id="clearHistoryBtn" class="btn btn-outline" style="color: #dc2626; border-color: #fee2e2;"
+                    data-i18n="btn_clear_history">Clear All Records</button>
+            </div>
+
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_date">DateTime</th>
+                            <th data-i18n="th_plot">Plot ID</th>
+                            <th data-i18n="th_status">Status</th>
+                            <th data-i18n="th_conf">Confidence</th>
+                            <th data-i18n="th_diag">Diagnosis</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyList">
+                        <!-- History items populated here -->
+                    </tbody>
+                </table>
+                <div id="noHistoryMsg" style="padding: 40px; text-align: center; color: var(--text-muted);"
+                    data-i18n="no_history">
+                    No scan records found. Start scanning your plots.
+                </div>
+            </div>
+        </section>
+
+        <!-- Fertilizer Finder -->
+        <section id="finder-screen" class="section">
+            <div class="header">
+                <h1 data-i18n="finder_title">Fertilizer Shop Network (TN)</h1>
+                <p data-i18n="finder_subtitle">Official agricultural input supply network across Tamil Nadu districts.
+                </p>
+            </div>
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div style="display: flex; gap: 12px; align-items: end; margin-bottom: 24px;">
+                    <div class="form-group" style="flex: 1; margin: 0;">
+                        <label data-i18n="label_district">Search District</label>
+                        <select id="districtSelect">
+                            <option value="" data-i18n="option_select_district">Select District...</option>
+                        </select>
+                    </div>
+                    <button id="locationBtn" class="btn btn-outline"
+                        style="background: #fff7ed; border-color: #ffedd5; color: #ea580c;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <span data-i18n="btn_detect_location">Auto-Detect</span>
+                    </button>
+                </div>
+                <div id="shopList" class="shop-grid">
+                    <!-- Shops will be populated here -->
+                </div>
+                <button id="tellShopsBtn" class="btn btn-voice" style="width: 100%; margin-top: 12px;">🔊 <span
+                        data-i18n="btn_tell_shops">Tell Store Information</span></button>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

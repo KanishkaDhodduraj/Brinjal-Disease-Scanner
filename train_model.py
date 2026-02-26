@@ -1,9 +1,23 @@
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
+import os
+import shutil
 
 print("🔄 Loading your dataset...")
-train_datagen = ImageDataGenerator(rescale=1./255, rotation_range=15, zoom_range=0.2)
+
+# Added Data Augmentation to prevent "soil detection" issues
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=30,      # Rotate images to learn from all angles
+    width_shift_range=0.2,  # Shift sideways
+    height_shift_range=0.2, # Shift up/down
+    shear_range=0.2,        # Distort shapes slightly
+    zoom_range=0.2,         # Zoom in/out (helper for varying distances)
+    horizontal_flip=True,   # Mirror images
+    fill_mode='nearest'     # Fill empty space after rotation
+)
+
 test_datagen = ImageDataGenerator(rescale=1./255)
 
 train_generator = train_datagen.flow_from_directory(
@@ -36,11 +50,20 @@ model = tf.keras.Sequential([
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-print("🚀 TRAINING STARTED (10 epochs = 90%+ accuracy)...")
-history = model.fit(train_generator, epochs=10, validation_data=test_generator)
+print("🚀 TRAINING STARTED (15 epochs for better accuracy)...")
+history = model.fit(train_generator, epochs=15, validation_data=test_generator)
 
 test_loss, test_acc = model.evaluate(test_generator)
 print(f"🎉 FINAL ACCURACY: {test_acc*100:.1f}%")
 
+# Save to root folder
 model.save('brinjal_leaf_model.h5')
-print("✅ Model saved! Ready for website!")
+print("✅ Model saved to local directory!")
+
+# Save to www folder for Python server
+www_model_path = os.path.join('www', 'brinjal_leaf_model.h5')
+if not os.path.exists('www'):
+    os.makedirs('www')
+
+model.save(www_model_path)
+print(f"✅ Model copy saved to {www_model_path} (for server use)!")
